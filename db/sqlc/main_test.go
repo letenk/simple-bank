@@ -16,16 +16,19 @@ const (
 
 // testQueries as return instance all function from object Queries
 var testQueries *Queries
+var testDB *sql.DB
 
 func TestMain(m *testing.M) {
+	var err error
+
 	// Open connection to db
-	conn, err := sql.Open(dbDriver, dbSource)
+	testDB, err = sql.Open(dbDriver, dbSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
 
 	// Inject connection into func New
-	testQueries = New(conn)
+	testQueries = New(testDB)
 
 	// Run test
 	os.Exit(m.Run())
